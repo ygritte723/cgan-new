@@ -1,4 +1,4 @@
-from torch.autograd import Variable
+
 from collections import OrderedDict
 import util.util as util
 from .base_model import BaseModel
@@ -28,12 +28,12 @@ class TestModel(BaseModel):
         # we need to use single_dataset mode
         input_A = input['A']
         if len(self.gpu_ids) > 0:
-            input_A = input_A.cuda(self.gpu_ids[0], async=True)
+            input_A = input_A.cuda(self.gpu_ids[0], non_blocking=True)
         self.input_A = input_A
         self.image_paths = input['A_paths']
 
     def test(self):
-        self.real_A = Variable(self.input_A)
+        self.real_A = self.input_A.float()
         self.fake_B = self.netG(self.real_A)
 
     # get image paths

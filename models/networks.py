@@ -1,8 +1,9 @@
 import torch
 import torch.nn as nn
 from torch.nn import init
+import torch.nn as nn
 import functools
-from torch.autograd import Variable
+
 from torch.optim import lr_scheduler
 ###############################################################################
 # Functions
@@ -10,48 +11,33 @@ from torch.optim import lr_scheduler
 
 
 def weights_init_normal(m):
-    classname = m.__class__.__name__
-    if classname.find('Conv') != -1:
-        init.normal(m.weight.data, 0.0, 0.02)
-    elif classname.find('Linear') != -1:
-        init.normal(m.weight.data, 0.0, 0.02)
-    elif classname.find('BatchNorm2d') != -1:
-        init.normal(m.weight.data, 1.0, 0.02)
-        init.constant(m.bias.data, 0.0)
-
+    if isinstance(m, (nn.Conv2d, nn.Linear)):
+        nn.init.normal_(m.weight, 0.0, 0.02)
+    elif isinstance(m, nn.BatchNorm2d):
+        nn.init.normal_(m.weight, 1.0, 0.02)
+        nn.init.constant_(m.bias, 0.0)
 
 def weights_init_xavier(m):
-    classname = m.__class__.__name__
-    if classname.find('Conv') != -1:
-        init.xavier_normal(m.weight.data, gain=0.02)
-    elif classname.find('Linear') != -1:
-        init.xavier_normal(m.weight.data, gain=0.02)
-    elif classname.find('BatchNorm2d') != -1:
-        init.normal(m.weight.data, 1.0, 0.02)
-        init.constant(m.bias.data, 0.0)
+    if isinstance(m, (nn.Conv2d, nn.Linear)):
+        nn.init.xavier_normal_(m.weight, 0.0, 0.02)
+    elif isinstance(m, nn.BatchNorm2d):
+        nn.init.normal_(m.weight, 1.0, 0.02)
+        nn.init.constant_(m.bias, 0.0)
 
 
 def weights_init_kaiming(m):
-    classname = m.__class__.__name__
-    if classname.find('Conv') != -1:
-        init.kaiming_normal(m.weight.data, a=0, mode='fan_in')
-    elif classname.find('Linear') != -1:
-        init.kaiming_normal(m.weight.data, a=0, mode='fan_in')
-    elif classname.find('BatchNorm2d') != -1:
-        init.normal(m.weight.data, 1.0, 0.02)
-        init.constant(m.bias.data, 0.0)
-
+    if isinstance(m, (nn.Conv2d, nn.Linear)):
+        nn.init.kaiming_normal_(m.weight, a=0, mode='fan_in')
+    elif isinstance(m, nn.BatchNorm2d):
+        nn.init.normal_(m.weight, 1.0, 0.02)
+        nn.init.constant_(m.bias, 0.0)
 
 def weights_init_orthogonal(m):
-    classname = m.__class__.__name__
-    print(classname)
-    if classname.find('Conv') != -1:
-        init.orthogonal(m.weight.data, gain=1)
-    elif classname.find('Linear') != -1:
-        init.orthogonal(m.weight.data, gain=1)
-    elif classname.find('BatchNorm2d') != -1:
-        init.normal(m.weight.data, 1.0, 0.02)
-        init.constant(m.bias.data, 0.0)
+    if isinstance(m, (nn.Conv2d, nn.Linear)):
+        nn.init.orthogonal_(m.weight, gain=1)
+    elif isinstance(m, nn.BatchNorm2d):
+        nn.init.normal_(m.weight, 1.0, 0.02)
+        nn.init.constant_(m.bias, 0.0)
 
 
 def init_weights(net, init_type='normal'):
@@ -73,7 +59,7 @@ def get_norm_layer(norm_type='instance'):
     if norm_type == 'batch':
         norm_layer = functools.partial(nn.BatchNorm2d, affine=True)
     elif norm_type == 'instance':
-        norm_layer = functools.partial(nn.InstanceNorm2d, affine=False)
+        norm_layer = functools.partial(nn.InstanceNorm2d, affine=False, track_running_stats=True)
     elif norm_type == 'none':
         norm_layer = None
     else:
@@ -102,19 +88,23 @@ def define_G(input_nc, output_nc, ngf,  norm='batch', use_dropout=False, init_ty
     netG = None
     use_gpu = len(gpu_ids) > 0
     norm_layer = get_norm_layer(norm_type=norm)
+    device = torch.device("cuda:{}".format(gpu_ids[0]) if gpu_ids else "cpu")
 
     if use_gpu:
         assert(torch.cuda.is_available())
+    # print('input_nc:',input_nc)
     netG = ResnetGenerator(input_nc, output_nc, ngf, norm_layer=norm_layer, use_dropout=use_dropout, n_blocks=9, gpu_ids=gpu_ids)
 
     if len(gpu_ids) > 0:
-        netG.cuda(gpu_ids[0])
+        netG.to(device)
+    # print('netG:',netG)
     init_weights(netG, init_type=init_type)
     return netG
 
 
 def define_D(input_nc, ndf,n_layers_D=3, norm='batch', use_sigmoid=False, init_type='normal', gpu_ids=[]):
     #Define and initialize discriminator
+    device = torch.device("cuda:{}".format(gpu_ids[0]) if gpu_ids else "cpu")
     netD = None
     use_gpu = len(gpu_ids) > 0
     norm_layer = get_norm_layer(norm_type=norm)
@@ -125,7 +115,7 @@ def define_D(input_nc, ndf,n_layers_D=3, norm='batch', use_sigmoid=False, init_t
     netD = NLayerDiscriminator(input_nc, ndf, n_layers_D, norm_layer=norm_layer, use_sigmoid=use_sigmoid, gpu_ids=gpu_ids)
 
     if use_gpu:
-        netD.cuda(gpu_ids[0])
+        netD.to(device)
     init_weights(netD, init_type=init_type)
     return netD
 
@@ -166,14 +156,14 @@ class GANLoss(nn.Module):
                             (self.real_label_var.numel() != input.numel()))
             if create_label:
                 real_tensor = self.Tensor(input.size()).fill_(self.real_label)
-                self.real_label_var = Variable(real_tensor, requires_grad=False)
+                self.real_label_var = real_tensor
             target_tensor = self.real_label_var
         else:
             create_label = ((self.fake_label_var is None) or
                             (self.fake_label_var.numel() != input.numel()))
             if create_label:
                 fake_tensor = self.Tensor(input.size()).fill_(self.fake_label)
-                self.fake_label_var = Variable(fake_tensor, requires_grad=False)
+                self.fake_label_var = fake_tensor
             target_tensor = self.fake_label_var
         return target_tensor
 

@@ -4,8 +4,23 @@ import ntpath
 import time
 from . import util
 from . import html
-from scipy.misc import imresize
+# from scipy.misc import imresize
+from PIL import Image
+def imresize(arr, size, interp='bilinear'):
+    """Resize an image array using Pillow.
 
+    Parameters:
+      arr: a NumPy array representing an image.
+      size: tuple (new_height, new_width).
+      interp: interpolation method ('bilinear' or 'nearest').
+
+    Returns:
+      The resized image as a NumPy array.
+    """
+    pil_img = Image.fromarray(arr)
+    resample = Image.BILINEAR if interp == 'bilinear' else Image.NEAREST
+    resized = pil_img.resize((size[1], size[0]), resample=resample)
+    return np.array(resized)
 
 class Visualizer():
     def __init__(self, opt):

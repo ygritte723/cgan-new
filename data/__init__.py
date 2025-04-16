@@ -12,16 +12,20 @@ def CreateDataLoader(opt):
 def CreateDataset(opt):
     #data directory
     target_file=opt.dataroot+'/'+opt.phase+'/data.mat'
+    # Create an HDF5 file named "data.mat" (the extension can still be .mat if the code expects that)
+    # print(target_file)
     f = h5py.File(target_file,'r') 
-    slices=np.array(f['data_x']).shape[3]/2
-    samples=range(np.array(f['data_y']).shape[2])
+    slices = np.array(f['data_x']).shape[3] // 2
+    # samples=range(np.array(f['data_y']).shape[2])
+    samples = list(range(np.array(f['data_y']).shape[2]))
+
     #Selecting neighbouring slices based on the inputs
     if opt.which_direction=='AtoB':
-        data_x=np.array(f['data_x'])[:,:,:,slices-opt.input_nc/2:slices+opt.input_nc/2+1]
-        data_y=np.array(f['data_y'])[:,:,:,slices-opt.output_nc/2:slices+opt.output_nc/2+1]
+        data_x=np.array(f['data_x'])[:,:,:,slices-opt.input_nc//2:slices+opt.input_nc//2+1]
+        data_y=np.array(f['data_y'])[:,:,:,slices-opt.output_nc//2:slices+opt.output_nc//2+1]
     else:            
-        data_y=np.array(f['data_y'])[:,:,:,slices-opt.input_nc/2:slices+opt.input_nc/2+1]
-        data_x=np.array(f['data_x'])[:,:,:,slices-opt.output_nc/2:slices+opt.output_nc/2+1]
+        data_y=np.array(f['data_y'])[:,:,:,slices-opt.input_nc//2:slices+opt.input_nc//2+1]
+        data_x=np.array(f['data_x'])[:,:,:,slices-opt.output_nc//2:slices+opt.output_nc//2+1]
     #Shuffle slices in data_y for the cGAN case (incase the input data is registered)
     if opt.dataset_mode == 'unaligned_mat':  
         if opt.isTrain:

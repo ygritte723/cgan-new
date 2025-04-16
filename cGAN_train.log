@@ -1,0 +1,813 @@
+------------ Options -------------
+batchSize: 1
+beta1: 0.5
+checkpoints_dir: checkpoints/
+continue_train: False
+dataroot: datasets/infant
+dataset_mode: unaligned_mat
+display_freq: 250
+display_id: 1
+display_port: 8097
+display_server: http://localhost
+display_single_pane_ncols: 1
+display_winsize: 256
+epoch_count: 1
+gpu_ids: [0]
+init_type: normal
+input_nc: 1
+isTrain: True
+lambda_A: 100.0
+lambda_B: 100.0
+lambda_adv: 1.0
+lambda_identity: 0
+lambda_vgg: 1.0
+lr: 0.0002
+lr_decay_iters: 50
+lr_policy: lambda
+max_dataset_size: inf
+model: cGAN
+nThreads: 2
+n_layers_D: 3
+name: cGAN_run_infant
+ndf: 64
+ngf: 64
+niter: 50
+niter_decay: 100
+no_dropout: True
+no_html: False
+no_lsgan: False
+norm: instance
+output_nc: 1
+phase: train
+pool_size: 0
+print_freq: 100
+save_epoch_freq: 25
+save_latest_freq: 5000
+serial_batches: False
+training: True
+update_html_freq: 1000
+vgg_layer: 2
+which_direction: AtoB
+which_epoch: latest
+-------------- End ----------------
+cGAN
+initialization method [normal]
+initialization method [normal]
+initialization method [normal]
+initialization method [normal]
+---------- Networks initialized -------------
+ResnetGenerator(
+  (model): Sequential(
+    (0): ReflectionPad2d((3, 3, 3, 3))
+    (1): Conv2d(1, 64, kernel_size=(7, 7), stride=(1, 1))
+    (2): InstanceNorm2d(64, eps=1e-05, momentum=0.1, affine=False, track_running_stats=True)
+    (3): ReLU(inplace=True)
+    (4): Conv2d(64, 128, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1))
+    (5): InstanceNorm2d(128, eps=1e-05, momentum=0.1, affine=False, track_running_stats=True)
+    (6): ReLU(inplace=True)
+    (7): Conv2d(128, 256, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1))
+    (8): InstanceNorm2d(256, eps=1e-05, momentum=0.1, affine=False, track_running_stats=True)
+    (9): ReLU(inplace=True)
+    (10): ResnetBlock(
+      (conv_block): Sequential(
+        (0): ReflectionPad2d((1, 1, 1, 1))
+        (1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1))
+        (2): InstanceNorm2d(256, eps=1e-05, momentum=0.1, affine=False, track_running_stats=True)
+        (3): ReLU(inplace=True)
+        (4): ReflectionPad2d((1, 1, 1, 1))
+        (5): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1))
+        (6): InstanceNorm2d(256, eps=1e-05, momentum=0.1, affine=False, track_running_stats=True)
+      )
+    )
+    (11): ResnetBlock(
+      (conv_block): Sequential(
+        (0): ReflectionPad2d((1, 1, 1, 1))
+        (1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1))
+        (2): InstanceNorm2d(256, eps=1e-05, momentum=0.1, affine=False, track_running_stats=True)
+        (3): ReLU(inplace=True)
+        (4): ReflectionPad2d((1, 1, 1, 1))
+        (5): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1))
+        (6): InstanceNorm2d(256, eps=1e-05, momentum=0.1, affine=False, track_running_stats=True)
+      )
+    )
+    (12): ResnetBlock(
+      (conv_block): Sequential(
+        (0): ReflectionPad2d((1, 1, 1, 1))
+        (1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1))
+        (2): InstanceNorm2d(256, eps=1e-05, momentum=0.1, affine=False, track_running_stats=True)
+        (3): ReLU(inplace=True)
+        (4): ReflectionPad2d((1, 1, 1, 1))
+        (5): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1))
+        (6): InstanceNorm2d(256, eps=1e-05, momentum=0.1, affine=False, track_running_stats=True)
+      )
+    )
+    (13): ResnetBlock(
+      (conv_block): Sequential(
+        (0): ReflectionPad2d((1, 1, 1, 1))
+        (1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1))
+        (2): InstanceNorm2d(256, eps=1e-05, momentum=0.1, affine=False, track_running_stats=True)
+        (3): ReLU(inplace=True)
+        (4): ReflectionPad2d((1, 1, 1, 1))
+        (5): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1))
+        (6): InstanceNorm2d(256, eps=1e-05, momentum=0.1, affine=False, track_running_stats=True)
+      )
+    )
+    (14): ResnetBlock(
+      (conv_block): Sequential(
+        (0): ReflectionPad2d((1, 1, 1, 1))
+        (1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1))
+        (2): InstanceNorm2d(256, eps=1e-05, momentum=0.1, affine=False, track_running_stats=True)
+        (3): ReLU(inplace=True)
+        (4): ReflectionPad2d((1, 1, 1, 1))
+        (5): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1))
+        (6): InstanceNorm2d(256, eps=1e-05, momentum=0.1, affine=False, track_running_stats=True)
+      )
+    )
+    (15): ResnetBlock(
+      (conv_block): Sequential(
+        (0): ReflectionPad2d((1, 1, 1, 1))
+        (1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1))
+        (2): InstanceNorm2d(256, eps=1e-05, momentum=0.1, affine=False, track_running_stats=True)
+        (3): ReLU(inplace=True)
+        (4): ReflectionPad2d((1, 1, 1, 1))
+        (5): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1))
+        (6): InstanceNorm2d(256, eps=1e-05, momentum=0.1, affine=False, track_running_stats=True)
+      )
+    )
+    (16): ResnetBlock(
+      (conv_block): Sequential(
+        (0): ReflectionPad2d((1, 1, 1, 1))
+        (1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1))
+        (2): InstanceNorm2d(256, eps=1e-05, momentum=0.1, affine=False, track_running_stats=True)
+        (3): ReLU(inplace=True)
+        (4): ReflectionPad2d((1, 1, 1, 1))
+        (5): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1))
+        (6): InstanceNorm2d(256, eps=1e-05, momentum=0.1, affine=False, track_running_stats=True)
+      )
+    )
+    (17): ResnetBlock(
+      (conv_block): Sequential(
+        (0): ReflectionPad2d((1, 1, 1, 1))
+        (1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1))
+        (2): InstanceNorm2d(256, eps=1e-05, momentum=0.1, affine=False, track_running_stats=True)
+        (3): ReLU(inplace=True)
+        (4): ReflectionPad2d((1, 1, 1, 1))
+        (5): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1))
+        (6): InstanceNorm2d(256, eps=1e-05, momentum=0.1, affine=False, track_running_stats=True)
+      )
+    )
+    (18): ResnetBlock(
+      (conv_block): Sequential(
+        (0): ReflectionPad2d((1, 1, 1, 1))
+        (1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1))
+        (2): InstanceNorm2d(256, eps=1e-05, momentum=0.1, affine=False, track_running_stats=True)
+        (3): ReLU(inplace=True)
+        (4): ReflectionPad2d((1, 1, 1, 1))
+        (5): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1))
+        (6): InstanceNorm2d(256, eps=1e-05, momentum=0.1, affine=False, track_running_stats=True)
+      )
+    )
+    (19): ConvTranspose2d(256, 128, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), output_padding=(1, 1))
+    (20): InstanceNorm2d(128, eps=1e-05, momentum=0.1, affine=False, track_running_stats=True)
+    (21): ReLU(inplace=True)
+    (22): ConvTranspose2d(128, 64, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), output_padding=(1, 1))
+    (23): InstanceNorm2d(64, eps=1e-05, momentum=0.1, affine=False, track_running_stats=True)
+    (24): ReLU(inplace=True)
+    (25): ReflectionPad2d((3, 3, 3, 3))
+    (26): Conv2d(64, 1, kernel_size=(7, 7), stride=(1, 1))
+    (27): Tanh()
+  )
+)
+Total number of parameters: 11365633
+Setting up a new session...
+ResnetGenerator(
+  (model): Sequential(
+    (0): ReflectionPad2d((3, 3, 3, 3))
+    (1): Conv2d(1, 64, kernel_size=(7, 7), stride=(1, 1))
+    (2): InstanceNorm2d(64, eps=1e-05, momentum=0.1, affine=False, track_running_stats=True)
+    (3): ReLU(inplace=True)
+    (4): Conv2d(64, 128, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1))
+    (5): InstanceNorm2d(128, eps=1e-05, momentum=0.1, affine=False, track_running_stats=True)
+    (6): ReLU(inplace=True)
+    (7): Conv2d(128, 256, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1))
+    (8): InstanceNorm2d(256, eps=1e-05, momentum=0.1, affine=False, track_running_stats=True)
+    (9): ReLU(inplace=True)
+    (10): ResnetBlock(
+      (conv_block): Sequential(
+        (0): ReflectionPad2d((1, 1, 1, 1))
+        (1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1))
+        (2): InstanceNorm2d(256, eps=1e-05, momentum=0.1, affine=False, track_running_stats=True)
+        (3): ReLU(inplace=True)
+        (4): ReflectionPad2d((1, 1, 1, 1))
+        (5): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1))
+        (6): InstanceNorm2d(256, eps=1e-05, momentum=0.1, affine=False, track_running_stats=True)
+      )
+    )
+    (11): ResnetBlock(
+      (conv_block): Sequential(
+        (0): ReflectionPad2d((1, 1, 1, 1))
+        (1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1))
+        (2): InstanceNorm2d(256, eps=1e-05, momentum=0.1, affine=False, track_running_stats=True)
+        (3): ReLU(inplace=True)
+        (4): ReflectionPad2d((1, 1, 1, 1))
+        (5): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1))
+        (6): InstanceNorm2d(256, eps=1e-05, momentum=0.1, affine=False, track_running_stats=True)
+      )
+    )
+    (12): ResnetBlock(
+      (conv_block): Sequential(
+        (0): ReflectionPad2d((1, 1, 1, 1))
+        (1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1))
+        (2): InstanceNorm2d(256, eps=1e-05, momentum=0.1, affine=False, track_running_stats=True)
+        (3): ReLU(inplace=True)
+        (4): ReflectionPad2d((1, 1, 1, 1))
+        (5): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1))
+        (6): InstanceNorm2d(256, eps=1e-05, momentum=0.1, affine=False, track_running_stats=True)
+      )
+    )
+    (13): ResnetBlock(
+      (conv_block): Sequential(
+        (0): ReflectionPad2d((1, 1, 1, 1))
+        (1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1))
+        (2): InstanceNorm2d(256, eps=1e-05, momentum=0.1, affine=False, track_running_stats=True)
+        (3): ReLU(inplace=True)
+        (4): ReflectionPad2d((1, 1, 1, 1))
+        (5): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1))
+        (6): InstanceNorm2d(256, eps=1e-05, momentum=0.1, affine=False, track_running_stats=True)
+      )
+    )
+    (14): ResnetBlock(
+      (conv_block): Sequential(
+        (0): ReflectionPad2d((1, 1, 1, 1))
+        (1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1))
+        (2): InstanceNorm2d(256, eps=1e-05, momentum=0.1, affine=False, track_running_stats=True)
+        (3): ReLU(inplace=True)
+        (4): ReflectionPad2d((1, 1, 1, 1))
+        (5): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1))
+        (6): InstanceNorm2d(256, eps=1e-05, momentum=0.1, affine=False, track_running_stats=True)
+      )
+    )
+    (15): ResnetBlock(
+      (conv_block): Sequential(
+        (0): ReflectionPad2d((1, 1, 1, 1))
+        (1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1))
+        (2): InstanceNorm2d(256, eps=1e-05, momentum=0.1, affine=False, track_running_stats=True)
+        (3): ReLU(inplace=True)
+        (4): ReflectionPad2d((1, 1, 1, 1))
+        (5): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1))
+        (6): InstanceNorm2d(256, eps=1e-05, momentum=0.1, affine=False, track_running_stats=True)
+      )
+    )
+    (16): ResnetBlock(
+      (conv_block): Sequential(
+        (0): ReflectionPad2d((1, 1, 1, 1))
+        (1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1))
+        (2): InstanceNorm2d(256, eps=1e-05, momentum=0.1, affine=False, track_running_stats=True)
+        (3): ReLU(inplace=True)
+        (4): ReflectionPad2d((1, 1, 1, 1))
+        (5): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1))
+        (6): InstanceNorm2d(256, eps=1e-05, momentum=0.1, affine=False, track_running_stats=True)
+      )
+    )
+    (17): ResnetBlock(
+      (conv_block): Sequential(
+        (0): ReflectionPad2d((1, 1, 1, 1))
+        (1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1))
+        (2): InstanceNorm2d(256, eps=1e-05, momentum=0.1, affine=False, track_running_stats=True)
+        (3): ReLU(inplace=True)
+        (4): ReflectionPad2d((1, 1, 1, 1))
+        (5): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1))
+        (6): InstanceNorm2d(256, eps=1e-05, momentum=0.1, affine=False, track_running_stats=True)
+      )
+    )
+    (18): ResnetBlock(
+      (conv_block): Sequential(
+        (0): ReflectionPad2d((1, 1, 1, 1))
+        (1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1))
+        (2): InstanceNorm2d(256, eps=1e-05, momentum=0.1, affine=False, track_running_stats=True)
+        (3): ReLU(inplace=True)
+        (4): ReflectionPad2d((1, 1, 1, 1))
+        (5): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1))
+        (6): InstanceNorm2d(256, eps=1e-05, momentum=0.1, affine=False, track_running_stats=True)
+      )
+    )
+    (19): ConvTranspose2d(256, 128, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), output_padding=(1, 1))
+    (20): InstanceNorm2d(128, eps=1e-05, momentum=0.1, affine=False, track_running_stats=True)
+    (21): ReLU(inplace=True)
+    (22): ConvTranspose2d(128, 64, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), output_padding=(1, 1))
+    (23): InstanceNorm2d(64, eps=1e-05, momentum=0.1, affine=False, track_running_stats=True)
+    (24): ReLU(inplace=True)
+    (25): ReflectionPad2d((3, 3, 3, 3))
+    (26): Conv2d(64, 1, kernel_size=(7, 7), stride=(1, 1))
+    (27): Tanh()
+  )
+)
+Total number of parameters: 11365633
+NLayerDiscriminator(
+  (model): Sequential(
+    (0): Conv2d(1, 64, kernel_size=(4, 4), stride=(2, 2), padding=(1, 1))
+    (1): LeakyReLU(negative_slope=0.2, inplace=True)
+    (2): Conv2d(64, 128, kernel_size=(4, 4), stride=(2, 2), padding=(1, 1))
+    (3): InstanceNorm2d(128, eps=1e-05, momentum=0.1, affine=False, track_running_stats=True)
+    (4): LeakyReLU(negative_slope=0.2, inplace=True)
+    (5): Conv2d(128, 256, kernel_size=(4, 4), stride=(2, 2), padding=(1, 1))
+    (6): InstanceNorm2d(256, eps=1e-05, momentum=0.1, affine=False, track_running_stats=True)
+    (7): LeakyReLU(negative_slope=0.2, inplace=True)
+    (8): Conv2d(256, 512, kernel_size=(4, 4), stride=(1, 1), padding=(1, 1))
+    (9): InstanceNorm2d(512, eps=1e-05, momentum=0.1, affine=False, track_running_stats=True)
+    (10): LeakyReLU(negative_slope=0.2, inplace=True)
+    (11): Conv2d(512, 1, kernel_size=(4, 4), stride=(1, 1), padding=(1, 1))
+  )
+)
+Total number of parameters: 2762689
+NLayerDiscriminator(
+  (model): Sequential(
+    (0): Conv2d(1, 64, kernel_size=(4, 4), stride=(2, 2), padding=(1, 1))
+    (1): LeakyReLU(negative_slope=0.2, inplace=True)
+    (2): Conv2d(64, 128, kernel_size=(4, 4), stride=(2, 2), padding=(1, 1))
+    (3): InstanceNorm2d(128, eps=1e-05, momentum=0.1, affine=False, track_running_stats=True)
+    (4): LeakyReLU(negative_slope=0.2, inplace=True)
+    (5): Conv2d(128, 256, kernel_size=(4, 4), stride=(2, 2), padding=(1, 1))
+    (6): InstanceNorm2d(256, eps=1e-05, momentum=0.1, affine=False, track_running_stats=True)
+    (7): LeakyReLU(negative_slope=0.2, inplace=True)
+    (8): Conv2d(256, 512, kernel_size=(4, 4), stride=(1, 1), padding=(1, 1))
+    (9): InstanceNorm2d(512, eps=1e-05, momentum=0.1, affine=False, track_running_stats=True)
+    (10): LeakyReLU(negative_slope=0.2, inplace=True)
+    (11): Conv2d(512, 1, kernel_size=(4, 4), stride=(1, 1), padding=(1, 1))
+  )
+)
+Total number of parameters: 2762689
+-----------------------------------------------
+model cGAN was created
+CustomDatasetDataLoader
+Training phase
+Training images = 7
+create web directory checkpoints/cGAN_run_infant/web...
+unaligned_mat
+End of epoch 1 / 150 	 Time Taken: 1 sec
+learning rate = 0.0002000
+/home/xzhon54/xinliuz/pGAN-cGAN/models/networks.py:158: UserWarning: The torch.cuda.*DtypeTensor constructors are no longer recommended. It's best to use methods such as torch.tensor(data, dtype=*, device='cuda') to create tensors. (Triggered internally at ../torch/csrc/tensor/python_tensor.cpp:78.)
+  real_tensor = self.Tensor(input.size()).fill_(self.real_label)
+unaligned_mat
+End of epoch 2 / 150 	 Time Taken: 0 sec
+learning rate = 0.0002000
+unaligned_mat
+End of epoch 3 / 150 	 Time Taken: 0 sec
+learning rate = 0.0002000
+unaligned_mat
+End of epoch 4 / 150 	 Time Taken: 0 sec
+learning rate = 0.0002000
+unaligned_mat
+End of epoch 5 / 150 	 Time Taken: 0 sec
+learning rate = 0.0002000
+unaligned_mat
+End of epoch 6 / 150 	 Time Taken: 0 sec
+learning rate = 0.0002000
+unaligned_mat
+End of epoch 7 / 150 	 Time Taken: 0 sec
+learning rate = 0.0002000
+unaligned_mat
+End of epoch 8 / 150 	 Time Taken: 0 sec
+learning rate = 0.0002000
+unaligned_mat
+End of epoch 9 / 150 	 Time Taken: 0 sec
+learning rate = 0.0002000
+unaligned_mat
+End of epoch 10 / 150 	 Time Taken: 0 sec
+learning rate = 0.0002000
+unaligned_mat
+End of epoch 11 / 150 	 Time Taken: 0 sec
+learning rate = 0.0002000
+unaligned_mat
+End of epoch 12 / 150 	 Time Taken: 0 sec
+learning rate = 0.0002000
+unaligned_mat
+End of epoch 13 / 150 	 Time Taken: 0 sec
+learning rate = 0.0002000
+unaligned_mat
+End of epoch 14 / 150 	 Time Taken: 0 sec
+learning rate = 0.0002000
+(epoch: 15, iters: 2, time: 0.111, data: 0.031) D_A: 0.015 G_A: 0.953 Cyc_A: 2.126 D_B: 0.020 G_B: 0.977 Cyc_B: 2.440 
+unaligned_mat
+End of epoch 15 / 150 	 Time Taken: 0 sec
+learning rate = 0.0002000
+unaligned_mat
+End of epoch 16 / 150 	 Time Taken: 0 sec
+learning rate = 0.0002000
+unaligned_mat
+End of epoch 17 / 150 	 Time Taken: 0 sec
+learning rate = 0.0002000
+unaligned_mat
+End of epoch 18 / 150 	 Time Taken: 0 sec
+learning rate = 0.0002000
+unaligned_mat
+End of epoch 19 / 150 	 Time Taken: 0 sec
+learning rate = 0.0002000
+unaligned_mat
+End of epoch 20 / 150 	 Time Taken: 0 sec
+learning rate = 0.0002000
+unaligned_mat
+End of epoch 21 / 150 	 Time Taken: 0 sec
+learning rate = 0.0002000
+unaligned_mat
+End of epoch 22 / 150 	 Time Taken: 0 sec
+learning rate = 0.0002000
+unaligned_mat
+End of epoch 23 / 150 	 Time Taken: 0 sec
+learning rate = 0.0002000
+unaligned_mat
+End of epoch 24 / 150 	 Time Taken: 0 sec
+learning rate = 0.0002000
+unaligned_mat
+saving the model at the end of epoch 25, iters 175
+End of epoch 25 / 150 	 Time Taken: 2 sec
+learning rate = 0.0002000
+unaligned_mat
+End of epoch 26 / 150 	 Time Taken: 0 sec
+learning rate = 0.0002000
+unaligned_mat
+End of epoch 27 / 150 	 Time Taken: 0 sec
+learning rate = 0.0002000
+unaligned_mat
+End of epoch 28 / 150 	 Time Taken: 0 sec
+learning rate = 0.0002000
+(epoch: 29, iters: 4, time: 0.109, data: 0.001) D_A: 0.011 G_A: 1.003 Cyc_A: 2.936 D_B: 0.009 G_B: 1.005 Cyc_B: 2.065 
+unaligned_mat
+End of epoch 29 / 150 	 Time Taken: 0 sec
+learning rate = 0.0002000
+unaligned_mat
+End of epoch 30 / 150 	 Time Taken: 0 sec
+learning rate = 0.0002000
+unaligned_mat
+End of epoch 31 / 150 	 Time Taken: 0 sec
+learning rate = 0.0002000
+unaligned_mat
+End of epoch 32 / 150 	 Time Taken: 0 sec
+learning rate = 0.0002000
+unaligned_mat
+End of epoch 33 / 150 	 Time Taken: 0 sec
+learning rate = 0.0002000
+unaligned_mat
+End of epoch 34 / 150 	 Time Taken: 0 sec
+learning rate = 0.0002000
+unaligned_mat
+End of epoch 35 / 150 	 Time Taken: 0 sec
+learning rate = 0.0002000
+unaligned_mat
+End of epoch 36 / 150 	 Time Taken: 0 sec
+learning rate = 0.0002000
+unaligned_mat
+End of epoch 37 / 150 	 Time Taken: 0 sec
+learning rate = 0.0002000
+unaligned_mat
+End of epoch 38 / 150 	 Time Taken: 0 sec
+learning rate = 0.0002000
+unaligned_mat
+End of epoch 39 / 150 	 Time Taken: 0 sec
+learning rate = 0.0002000
+unaligned_mat
+End of epoch 40 / 150 	 Time Taken: 0 sec
+learning rate = 0.0002000
+unaligned_mat
+End of epoch 41 / 150 	 Time Taken: 0 sec
+learning rate = 0.0002000
+unaligned_mat
+End of epoch 42 / 150 	 Time Taken: 0 sec
+learning rate = 0.0002000
+(epoch: 43, iters: 6, time: 0.109, data: 0.000) D_A: 0.011 G_A: 0.988 Cyc_A: 2.082 D_B: 0.016 G_B: 1.031 Cyc_B: 1.770 
+unaligned_mat
+End of epoch 43 / 150 	 Time Taken: 0 sec
+learning rate = 0.0002000
+unaligned_mat
+End of epoch 44 / 150 	 Time Taken: 0 sec
+learning rate = 0.0002000
+unaligned_mat
+End of epoch 45 / 150 	 Time Taken: 0 sec
+learning rate = 0.0002000
+unaligned_mat
+End of epoch 46 / 150 	 Time Taken: 0 sec
+learning rate = 0.0002000
+unaligned_mat
+End of epoch 47 / 150 	 Time Taken: 0 sec
+learning rate = 0.0002000
+unaligned_mat
+End of epoch 48 / 150 	 Time Taken: 0 sec
+learning rate = 0.0002000
+unaligned_mat
+End of epoch 49 / 150 	 Time Taken: 0 sec
+learning rate = 0.0001980
+unaligned_mat
+saving the model at the end of epoch 50, iters 350
+End of epoch 50 / 150 	 Time Taken: 2 sec
+learning rate = 0.0001960
+unaligned_mat
+End of epoch 51 / 150 	 Time Taken: 0 sec
+learning rate = 0.0001941
+unaligned_mat
+End of epoch 52 / 150 	 Time Taken: 0 sec
+learning rate = 0.0001921
+unaligned_mat
+End of epoch 53 / 150 	 Time Taken: 0 sec
+learning rate = 0.0001901
+unaligned_mat
+End of epoch 54 / 150 	 Time Taken: 0 sec
+learning rate = 0.0001881
+unaligned_mat
+End of epoch 55 / 150 	 Time Taken: 0 sec
+learning rate = 0.0001861
+unaligned_mat
+End of epoch 56 / 150 	 Time Taken: 0 sec
+learning rate = 0.0001842
+unaligned_mat
+End of epoch 57 / 150 	 Time Taken: 0 sec
+learning rate = 0.0001822
+(epoch: 58, iters: 1, time: 0.110, data: 0.002) D_A: 0.007 G_A: 1.003 Cyc_A: 1.657 D_B: 0.004 G_B: 1.012 Cyc_B: 1.733 
+unaligned_mat
+End of epoch 58 / 150 	 Time Taken: 0 sec
+learning rate = 0.0001802
+unaligned_mat
+End of epoch 59 / 150 	 Time Taken: 0 sec
+learning rate = 0.0001782
+unaligned_mat
+End of epoch 60 / 150 	 Time Taken: 0 sec
+learning rate = 0.0001762
+unaligned_mat
+End of epoch 61 / 150 	 Time Taken: 0 sec
+learning rate = 0.0001743
+unaligned_mat
+End of epoch 62 / 150 	 Time Taken: 0 sec
+learning rate = 0.0001723
+unaligned_mat
+End of epoch 63 / 150 	 Time Taken: 0 sec
+learning rate = 0.0001703
+unaligned_mat
+End of epoch 64 / 150 	 Time Taken: 0 sec
+learning rate = 0.0001683
+unaligned_mat
+End of epoch 65 / 150 	 Time Taken: 0 sec
+learning rate = 0.0001663
+unaligned_mat
+End of epoch 66 / 150 	 Time Taken: 0 sec
+learning rate = 0.0001644
+unaligned_mat
+End of epoch 67 / 150 	 Time Taken: 0 sec
+learning rate = 0.0001624
+unaligned_mat
+End of epoch 68 / 150 	 Time Taken: 0 sec
+learning rate = 0.0001604
+unaligned_mat
+End of epoch 69 / 150 	 Time Taken: 0 sec
+learning rate = 0.0001584
+unaligned_mat
+End of epoch 70 / 150 	 Time Taken: 0 sec
+learning rate = 0.0001564
+unaligned_mat
+End of epoch 71 / 150 	 Time Taken: 0 sec
+learning rate = 0.0001545
+(epoch: 72, iters: 3, time: 0.110, data: 0.002) D_A: 0.004 G_A: 1.008 Cyc_A: 1.626 D_B: 0.004 G_B: 0.982 Cyc_B: 1.174 
+unaligned_mat
+End of epoch 72 / 150 	 Time Taken: 0 sec
+learning rate = 0.0001525
+unaligned_mat
+End of epoch 73 / 150 	 Time Taken: 0 sec
+learning rate = 0.0001505
+unaligned_mat
+End of epoch 74 / 150 	 Time Taken: 0 sec
+learning rate = 0.0001485
+unaligned_mat
+saving the model at the end of epoch 75, iters 525
+End of epoch 75 / 150 	 Time Taken: 2 sec
+learning rate = 0.0001465
+unaligned_mat
+End of epoch 76 / 150 	 Time Taken: 0 sec
+learning rate = 0.0001446
+unaligned_mat
+End of epoch 77 / 150 	 Time Taken: 0 sec
+learning rate = 0.0001426
+unaligned_mat
+End of epoch 78 / 150 	 Time Taken: 0 sec
+learning rate = 0.0001406
+unaligned_mat
+End of epoch 79 / 150 	 Time Taken: 0 sec
+learning rate = 0.0001386
+unaligned_mat
+End of epoch 80 / 150 	 Time Taken: 0 sec
+learning rate = 0.0001366
+unaligned_mat
+End of epoch 81 / 150 	 Time Taken: 0 sec
+learning rate = 0.0001347
+unaligned_mat
+End of epoch 82 / 150 	 Time Taken: 0 sec
+learning rate = 0.0001327
+unaligned_mat
+End of epoch 83 / 150 	 Time Taken: 0 sec
+learning rate = 0.0001307
+unaligned_mat
+End of epoch 84 / 150 	 Time Taken: 0 sec
+learning rate = 0.0001287
+unaligned_mat
+End of epoch 85 / 150 	 Time Taken: 0 sec
+learning rate = 0.0001267
+(epoch: 86, iters: 5, time: 0.110, data: 0.002) D_A: 0.003 G_A: 0.987 Cyc_A: 2.131 D_B: 0.004 G_B: 1.006 Cyc_B: 1.789 
+unaligned_mat
+End of epoch 86 / 150 	 Time Taken: 0 sec
+learning rate = 0.0001248
+unaligned_mat
+End of epoch 87 / 150 	 Time Taken: 0 sec
+learning rate = 0.0001228
+unaligned_mat
+End of epoch 88 / 150 	 Time Taken: 0 sec
+learning rate = 0.0001208
+unaligned_mat
+End of epoch 89 / 150 	 Time Taken: 0 sec
+learning rate = 0.0001188
+unaligned_mat
+End of epoch 90 / 150 	 Time Taken: 0 sec
+learning rate = 0.0001168
+unaligned_mat
+End of epoch 91 / 150 	 Time Taken: 0 sec
+learning rate = 0.0001149
+unaligned_mat
+End of epoch 92 / 150 	 Time Taken: 0 sec
+learning rate = 0.0001129
+unaligned_mat
+End of epoch 93 / 150 	 Time Taken: 0 sec
+learning rate = 0.0001109
+unaligned_mat
+End of epoch 94 / 150 	 Time Taken: 0 sec
+learning rate = 0.0001089
+unaligned_mat
+End of epoch 95 / 150 	 Time Taken: 0 sec
+learning rate = 0.0001069
+unaligned_mat
+End of epoch 96 / 150 	 Time Taken: 0 sec
+learning rate = 0.0001050
+unaligned_mat
+End of epoch 97 / 150 	 Time Taken: 0 sec
+learning rate = 0.0001030
+unaligned_mat
+End of epoch 98 / 150 	 Time Taken: 0 sec
+learning rate = 0.0001010
+unaligned_mat
+End of epoch 99 / 150 	 Time Taken: 0 sec
+learning rate = 0.0000990
+(epoch: 100, iters: 7, time: 0.114, data: 0.001) D_A: 0.003 G_A: 0.990 Cyc_A: 2.121 D_B: 0.003 G_B: 1.019 Cyc_B: 6.344 
+unaligned_mat
+saving the model at the end of epoch 100, iters 700
+End of epoch 100 / 150 	 Time Taken: 2 sec
+learning rate = 0.0000970
+unaligned_mat
+End of epoch 101 / 150 	 Time Taken: 0 sec
+learning rate = 0.0000950
+unaligned_mat
+End of epoch 102 / 150 	 Time Taken: 0 sec
+learning rate = 0.0000931
+unaligned_mat
+End of epoch 103 / 150 	 Time Taken: 0 sec
+learning rate = 0.0000911
+unaligned_mat
+End of epoch 104 / 150 	 Time Taken: 0 sec
+learning rate = 0.0000891
+unaligned_mat
+End of epoch 105 / 150 	 Time Taken: 0 sec
+learning rate = 0.0000871
+unaligned_mat
+End of epoch 106 / 150 	 Time Taken: 0 sec
+learning rate = 0.0000851
+unaligned_mat
+End of epoch 107 / 150 	 Time Taken: 0 sec
+learning rate = 0.0000832
+unaligned_mat
+End of epoch 108 / 150 	 Time Taken: 0 sec
+learning rate = 0.0000812
+unaligned_mat
+End of epoch 109 / 150 	 Time Taken: 0 sec
+learning rate = 0.0000792
+unaligned_mat
+End of epoch 110 / 150 	 Time Taken: 0 sec
+learning rate = 0.0000772
+unaligned_mat
+End of epoch 111 / 150 	 Time Taken: 0 sec
+learning rate = 0.0000752
+unaligned_mat
+End of epoch 112 / 150 	 Time Taken: 0 sec
+learning rate = 0.0000733
+unaligned_mat
+End of epoch 113 / 150 	 Time Taken: 0 sec
+learning rate = 0.0000713
+unaligned_mat
+End of epoch 114 / 150 	 Time Taken: 0 sec
+learning rate = 0.0000693
+(epoch: 115, iters: 2, time: 0.110, data: 0.040) D_A: 0.002 G_A: 1.002 Cyc_A: 0.909 D_B: 0.003 G_B: 0.996 Cyc_B: 1.320 
+unaligned_mat
+End of epoch 115 / 150 	 Time Taken: 0 sec
+learning rate = 0.0000673
+unaligned_mat
+End of epoch 116 / 150 	 Time Taken: 0 sec
+learning rate = 0.0000653
+unaligned_mat
+End of epoch 117 / 150 	 Time Taken: 0 sec
+learning rate = 0.0000634
+unaligned_mat
+End of epoch 118 / 150 	 Time Taken: 0 sec
+learning rate = 0.0000614
+unaligned_mat
+End of epoch 119 / 150 	 Time Taken: 0 sec
+learning rate = 0.0000594
+unaligned_mat
+End of epoch 120 / 150 	 Time Taken: 0 sec
+learning rate = 0.0000574
+unaligned_mat
+End of epoch 121 / 150 	 Time Taken: 0 sec
+learning rate = 0.0000554
+unaligned_mat
+End of epoch 122 / 150 	 Time Taken: 0 sec
+learning rate = 0.0000535
+unaligned_mat
+End of epoch 123 / 150 	 Time Taken: 0 sec
+learning rate = 0.0000515
+unaligned_mat
+End of epoch 124 / 150 	 Time Taken: 0 sec
+learning rate = 0.0000495
+unaligned_mat
+saving the model at the end of epoch 125, iters 875
+End of epoch 125 / 150 	 Time Taken: 1 sec
+learning rate = 0.0000475
+unaligned_mat
+End of epoch 126 / 150 	 Time Taken: 0 sec
+learning rate = 0.0000455
+unaligned_mat
+End of epoch 127 / 150 	 Time Taken: 0 sec
+learning rate = 0.0000436
+unaligned_mat
+End of epoch 128 / 150 	 Time Taken: 0 sec
+learning rate = 0.0000416
+(epoch: 129, iters: 4, time: 0.060, data: 0.001) D_A: 0.002 G_A: 1.002 Cyc_A: 0.811 D_B: 0.002 G_B: 0.997 Cyc_B: 0.763 
+unaligned_mat
+End of epoch 129 / 150 	 Time Taken: 0 sec
+learning rate = 0.0000396
+unaligned_mat
+End of epoch 130 / 150 	 Time Taken: 0 sec
+learning rate = 0.0000376
+unaligned_mat
+End of epoch 131 / 150 	 Time Taken: 0 sec
+learning rate = 0.0000356
+unaligned_mat
+End of epoch 132 / 150 	 Time Taken: 0 sec
+learning rate = 0.0000337
+unaligned_mat
+End of epoch 133 / 150 	 Time Taken: 0 sec
+learning rate = 0.0000317
+unaligned_mat
+End of epoch 134 / 150 	 Time Taken: 0 sec
+learning rate = 0.0000297
+unaligned_mat
+End of epoch 135 / 150 	 Time Taken: 0 sec
+learning rate = 0.0000277
+unaligned_mat
+End of epoch 136 / 150 	 Time Taken: 0 sec
+learning rate = 0.0000257
+unaligned_mat
+End of epoch 137 / 150 	 Time Taken: 0 sec
+learning rate = 0.0000238
+unaligned_mat
+End of epoch 138 / 150 	 Time Taken: 0 sec
+learning rate = 0.0000218
+unaligned_mat
+End of epoch 139 / 150 	 Time Taken: 0 sec
+learning rate = 0.0000198
+unaligned_mat
+End of epoch 140 / 150 	 Time Taken: 0 sec
+learning rate = 0.0000178
+unaligned_mat
+End of epoch 141 / 150 	 Time Taken: 0 sec
+learning rate = 0.0000158
+unaligned_mat
+End of epoch 142 / 150 	 Time Taken: 0 sec
+learning rate = 0.0000139
+(epoch: 143, iters: 6, time: 0.115, data: 0.001) D_A: 0.002 G_A: 1.001 Cyc_A: 0.748 D_B: 0.002 G_B: 0.996 Cyc_B: 0.688 
+unaligned_mat
+End of epoch 143 / 150 	 Time Taken: 0 sec
+learning rate = 0.0000119
+unaligned_mat
+End of epoch 144 / 150 	 Time Taken: 0 sec
+learning rate = 0.0000099
+unaligned_mat
+End of epoch 145 / 150 	 Time Taken: 0 sec
+learning rate = 0.0000079
+unaligned_mat
+End of epoch 146 / 150 	 Time Taken: 0 sec
+learning rate = 0.0000059
+unaligned_mat
+End of epoch 147 / 150 	 Time Taken: 0 sec
+learning rate = 0.0000040
+unaligned_mat
+End of epoch 148 / 150 	 Time Taken: 0 sec
+learning rate = 0.0000020
+unaligned_mat
+End of epoch 149 / 150 	 Time Taken: 0 sec
+learning rate = 0.0000000
+unaligned_mat
+saving the model at the end of epoch 150, iters 1050
+End of epoch 150 / 150 	 Time Taken: 2 sec
+learning rate = -0.0000020

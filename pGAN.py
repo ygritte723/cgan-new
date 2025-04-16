@@ -1,3 +1,6 @@
+import torch
+print(torch.__version__)
+print(torch.backends.cudnn.version())
 def train():
     import time
     from options.train_options import TrainOptions
@@ -75,10 +78,14 @@ def test():
     
     data_loader = CreateDataLoader(opt)
     dataset = data_loader.load_data()
+    print('dataset size is %d' % len(data_loader))
+   
     model = create_model(opt)
+    # print('model [%s] was created' % (model.name()))
     visualizer = Visualizer(opt)
     # create website
     web_dir = os.path.join(opt.results_dir, opt.name, '%s_%s' % (opt.phase, opt.which_epoch))
+    print('creating web directory', web_dir)
     webpage = html.HTML(web_dir, 'Experiment = %s, Phase = %s, Epoch = %s' % (opt.name, opt.phase, opt.which_epoch))
     # test
     for i, data in enumerate(dataset):

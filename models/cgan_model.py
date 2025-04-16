@@ -1,6 +1,6 @@
 import torch
 from collections import OrderedDict
-from torch.autograd import Variable
+
 import itertools
 import util.util as util
 from util.image_pool import ImagePool
@@ -67,23 +67,23 @@ class cGAN(BaseModel):
         input_A = input['A' if AtoB else 'B']
         input_B = input['B' if AtoB else 'A']
         if len(self.gpu_ids) > 0:
-            input_A = input_A.cuda(self.gpu_ids[0], async=True)
-            input_B = input_B.cuda(self.gpu_ids[0], async=True)
+            input_A = input_A.cuda(self.gpu_ids[0], non_blocking=True)
+            input_B = input_B.cuda(self.gpu_ids[0], non_blocking=True)
         self.input_A = input_A
         self.input_B = input_B
         self.image_paths = input['A_paths' if AtoB else 'B_paths']
 
     def forward(self):
-        self.real_A = Variable(self.input_A)
-        self.real_B = Variable(self.input_B)
+        self.real_A = self.input_A.float()
+        self.real_B = self.input_B.float()
 
     def test(self):
-        self.real_A = Variable(self.input_A, volatile=True)
+        self.real_A = self.input_A.float()
         fake_B = self.netG_A(self.real_A)
         self.rec_A = self.netG_B(fake_B).data
         self.fake_B = fake_B.data
 
-        self.real_B = Variable(self.input_B, volatile=True)
+        self.real_B = self.input_B.float()
         fake_A = self.netG_B(self.real_B)
         self.rec_B = self.netG_A(fake_A).data
         self.fake_A = fake_A.data
@@ -108,12 +108,12 @@ class cGAN(BaseModel):
     def backward_D_A(self):
         fake_B = self.fake_B_pool.query(self.fake_B)
         loss_D_A = self.backward_D_basic(self.netD_A, self.real_B, fake_B)
-        self.loss_D_A = loss_D_A.data[0]
+        self.loss_D_A = loss_D_A.item()
 
     def backward_D_B(self):
         fake_A = self.fake_A_pool.query(self.fake_A)
         loss_D_B = self.backward_D_basic(self.netD_B, self.real_A, fake_A)
-        self.loss_D_B = loss_D_B.data[0]
+        self.loss_D_B = loss_D_B.item()
 
     def backward_G(self):
         lambda_A = self.opt.lambda_A
@@ -144,10 +144,15 @@ class cGAN(BaseModel):
         self.rec_A = rec_A.data
         self.rec_B = rec_B.data
 
-        self.loss_G_A = loss_G_A.data[0]
-        self.loss_G_B = loss_G_B.data[0]
-        self.loss_cycle_A = loss_cycle_A.data[0]
-        self.loss_cycle_B = loss_cycle_B.data[0]
+        # self.loss_G_A = loss_G_A.data[0]
+        # self.loss_G_B = loss_G_B.data[0]
+        # self.loss_cycle_A = loss_cycle_A.data[0]
+        # self.loss_cycle_B = loss_cycle_B.data[0]
+        self.loss_G_A = loss_G_A.item()
+        self.loss_G_B = loss_G_B.item()
+        self.loss_cycle_A = loss_cycle_A.item()
+        self.loss_cycle_B = loss_cycle_B.item()
+
 
     def optimize_parameters(self):
         # forward

@@ -1,6 +1,5 @@
 import torch
 from collections import OrderedDict
-from torch.autograd import Variable
 import util.util as util
 from util.image_pool import ImagePool
 from .base_model import BaseModel
@@ -14,18 +13,23 @@ class pGAN(BaseModel):
 
     def initialize(self, opt):
         BaseModel.initialize(self, opt)
+        print(opt)
         self.isTrain = opt.isTrain
+        
 
         # load/define networks
         self.netG = networks.define_G(opt.input_nc, opt.output_nc, opt.ngf,
                                       opt.norm, not opt.no_dropout, opt.init_type, self.gpu_ids)
+        print('self.netG loaded')
         self.vgg=VGG16().cuda()
+        print('self.vgg loaded')
         if self.isTrain:
             use_sigmoid = opt.no_lsgan
             self.netD = networks.define_D(opt.input_nc + opt.output_nc, opt.ndf,
                                           opt.n_layers_D, opt.norm, use_sigmoid, opt.init_type, self.gpu_ids)
         if not self.isTrain or opt.continue_train:
             self.load_network(self.netG, 'G', opt.which_epoch)
+            print('self.netG loaded')
             if self.isTrain:
                 self.load_network(self.netD, 'D', opt.which_epoch)
 
@@ -58,23 +62,23 @@ class pGAN(BaseModel):
         input_A = input['A' if AtoB else 'B']
         input_B = input['B' if AtoB else 'A']
         if len(self.gpu_ids) > 0:
-            input_A = input_A.cuda(self.gpu_ids[0], async=True)
-            input_B = input_B.cuda(self.gpu_ids[0], async=True)
+            input_A = input_A.cuda(self.gpu_ids[0], non_blocking=True)
+            input_B = input_B.cuda(self.gpu_ids[0], non_blocking=True)
         self.input_A = input_A
         self.input_B = input_B
         self.image_paths = input['A_paths' if AtoB else 'B_paths']
 
     def forward(self):
-        self.real_A = Variable(self.input_A)
+        self.real_A = self.input_A.float()
         self.fake_B = self.netG(self.real_A)
-        self.real_B = Variable(self.input_B)
+        self.real_B = self.input_B
 
     
     def test(self):
         # no backprop gradients
-        self.real_A = Variable(self.input_A, volatile=True)
+        self.real_A = self.input_A.float()
         self.fake_B = self.netG(self.real_A)
-        self.real_B = Variable(self.input_B, volatile=True)
+        self.real_B = self.input_B
 
     # get image paths
     def get_image_paths(self):

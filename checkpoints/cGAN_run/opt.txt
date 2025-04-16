@@ -1,15 +1,15 @@
 ------------ Options -------------
 aspect_ratio: 1.0
 batchSize: 1
-checkpoints_dir: checkpoints
-dataroot: datasets/IXI
+checkpoints_dir: checkpoints/
+dataroot: datasets/nips
 dataset_mode: aligned_mat
 display_id: 1
 display_port: 8097
 display_server: http://localhost
 display_winsize: 256
 gpu_ids: [0]
-how_many: 1200
+how_many: 1
 init_type: normal
 input_nc: 1
 isTrain: False
